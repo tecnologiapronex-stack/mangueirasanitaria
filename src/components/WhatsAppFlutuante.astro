@@ -1,0 +1,159 @@
+---
+/**
+ * Widget de WhatsApp: botão flutuante + pop-up de ajuda.
+ * Versão Astro (sem React) do componente WhatsAppFloat enviado pela Pronex.
+ * Para mudar textos e comportamento, edite só o objeto CONFIG.
+ */
+import { CONTATO, WHATSAPP_SAUDACAO, whatsappUrl } from "../data/site";
+import Icone from "./Icone.astro";
+
+const CONFIG = {
+  telefone: CONTATO.whatsappDigitos, // DDI + DDD + número, só dígitos
+  mensagem: WHATSAPP_SAUDACAO,
+  empresa: "Grupo Pronex",
+  subtitulo: "Mangueiras Sanitárias",
+  logo: "/img/logo-pronex.webp", // "" = sem logo
+  corLogoFundo: "#FFFFFF",
+  horario: "", // ex.: "Seg–Sex 8h–17h". Vazio = não mostra (horário ainda não confirmado)
+  textoPopup:
+    "Olá! Precisa de ajuda para escolher a mangueira, a bitola ou a conexão certa? Fale com a equipe técnica da Pronex pelo WhatsApp.",
+  textoBotao: "Conversar no WhatsApp",
+  segundosParaAbrir: 25, // abre após X segundos...
+  porcentagemRolagem: 45, // ...ou ao rolar X% da página (o que vier primeiro)
+  lado: "direita" as "direita" | "esquerda",
+  /** Páginas em que o pop-up não abre sozinho (o botão continua visível). */
+  semAberturaAutomatica: ["/orcamento", "/politica-de-privacidade"],
+};
+
+const url = whatsappUrl(CONFIG.mensagem);
+const autoAbrir = !CONFIG.semAberturaAutomatica.includes(Astro.url.pathname.replace(/\/$/, ""));
+---
+
+<div
+  class:list={["waw", CONFIG.lado === "esquerda" ? "waw-left" : "waw-right"]}
+  data-auto={autoAbrir ? "1" : "0"}
+  data-segundos={CONFIG.segundosParaAbrir}
+  data-rolagem={CONFIG.porcentagemRolagem}
+>
+  <div class="waw-pop" role="dialog" aria-label="Precisa de ajuda?" hidden>
+    <button type="button" class="waw-x" aria-label="Fechar">×</button>
+    <div class="waw-head">
+      {CONFIG.logo && (
+        <span class="waw-logo" style={`background:${CONFIG.corLogoFundo}`}>
+          <img src={CONFIG.logo} alt="" width="460" height="109" />
+        </span>
+      )}
+      <div>
+        <p class="waw-name">{CONFIG.empresa}</p>
+        <p class="waw-hours">
+          <span class="waw-dot"></span>
+          <span>{CONFIG.horario || CONFIG.subtitulo}</span>
+        </p>
+      </div>
+    </div>
+    <p class="waw-msg">{CONFIG.textoPopup}</p>
+    <a class="waw-cta" href={url} target="_blank" rel="noopener" data-wa-origem="popup">
+      <Icone nome="wa" />
+      <span>{CONFIG.textoBotao}</span>
+    </a>
+  </div>
+  <a
+    class="waw-btn"
+    href={url}
+    target="_blank"
+    rel="noopener"
+    aria-label={`Falar com ${CONFIG.empresa} pelo WhatsApp`}
+    data-wa-origem="botao_flutuante"
+  >
+    <Icone nome="wa" />
+  </a>
+</div>
+
+<style>
+  .waw { position: fixed; bottom: 24px; z-index: 50; display: flex; flex-direction: column; gap: 12px; font-family: var(--sans); }
+  .waw-right { right: 24px; align-items: flex-end; }
+  .waw-left { left: 24px; align-items: flex-start; }
+  .waw-btn { width: 60px; height: 60px; border-radius: 50%; background: var(--wa); color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22); transition: transform 0.15s; }
+  .waw-btn:hover { transform: scale(1.06); color: #fff; }
+  .waw-btn :global(svg) { width: 32px; height: 32px; }
+  .waw-pop { position: relative; width: min(330px, calc(100vw - 32px)); background: #fff; border-radius: 14px; padding: 18px; box-shadow: 0 12px 40px rgba(15, 27, 42, 0.22); border: 1px solid var(--linha); animation: waw-in 0.25s ease-out; }
+  .waw-pop[hidden] { display: none; }
+  @keyframes waw-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .waw-pop { animation: none; } .waw-btn { transition: none; } }
+  .waw-x { position: absolute; top: 6px; right: 8px; width: 36px; height: 36px; border: 0; background: none; font-size: 24px; line-height: 1; color: var(--texto-2); cursor: pointer; border-radius: 6px; }
+  .waw-x:hover { background: var(--fundo); }
+  .waw-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; padding-right: 28px; }
+  .waw-logo { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid var(--linha); flex: none; overflow: hidden; }
+  .waw-logo img { width: 42px; height: auto; }
+  .waw-name { font-weight: 600; font-size: 15.5px; color: var(--tinta); }
+  .waw-hours { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--texto-2); }
+  .waw-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--wa); }
+  .waw-msg { font-size: 15px; line-height: 1.5; color: var(--texto); background: var(--fundo); padding: 12px 14px; border-radius: 4px 12px 12px 12px; margin-bottom: 14px; }
+  .waw-cta { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; border-radius: 8px; background: var(--wa); color: #fff; font-weight: 600; text-decoration: none; }
+  .waw-cta:hover { background: #178a45; color: #fff; }
+  .waw-cta :global(svg) { width: 22px; height: 22px; }
+  /* No celular, fica acima da barra fixa de contato */
+  @media (max-width: 920px) {
+    .waw { bottom: calc(80px + env(safe-area-inset-bottom)); }
+    .waw-right { right: 16px; }
+    .waw-left { left: 16px; }
+    .waw-btn { width: 54px; height: 54px; }
+  }
+</style>
+
+<script>
+  const STORAGE_KEY = "wa-widget-fechado";
+  const raiz = document.querySelector<HTMLElement>(".waw");
+  const pop = raiz?.querySelector<HTMLElement>(".waw-pop");
+
+  function track(origem: string) {
+    const w = window as unknown as {
+      dataLayer?: unknown[];
+      clarity?: (...a: unknown[]) => void;
+    };
+    (w.dataLayer = w.dataLayer || []).push({ event: "contact_click", canal: "whatsapp", origem, pagina: location.pathname });
+    if (typeof w.clarity === "function") w.clarity("event", "whatsapp");
+  }
+
+  function fechar() {
+    if (pop) pop.hidden = true;
+    try { sessionStorage.setItem(STORAGE_KEY, "1"); } catch { /* sem storage */ }
+  }
+
+  if (raiz && pop) {
+    raiz.querySelector(".waw-x")?.addEventListener("click", fechar);
+    raiz.querySelectorAll<HTMLAnchorElement>("[data-wa-origem]").forEach((a) =>
+      a.addEventListener("click", () => {
+        track(a.dataset.waOrigem || "widget");
+        if (a.dataset.waOrigem === "popup") fechar();
+      }),
+    );
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !pop.hidden) fechar(); });
+
+    let fechado = false;
+    try { fechado = sessionStorage.getItem(STORAGE_KEY) === "1"; } catch { /* segue */ }
+
+    if (!fechado && raiz.dataset.auto === "1") {
+      let mostrado = false;
+      const segundos = Number(raiz.dataset.segundos || 25);
+      const pctAlvo = Number(raiz.dataset.rolagem || 45);
+      const mostrar = () => {
+        if (mostrado) return;
+        mostrado = true;
+        pop.hidden = false;
+        limpar();
+      };
+      const aoRolar = () => {
+        const h = document.documentElement;
+        const pct = (h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) * 100;
+        if (pct > pctAlvo) mostrar();
+      };
+      const timer = window.setTimeout(mostrar, segundos * 1000);
+      window.addEventListener("scroll", aoRolar, { passive: true });
+      function limpar() {
+        window.clearTimeout(timer);
+        window.removeEventListener("scroll", aoRolar);
+      }
+    }
+  }
+</script>

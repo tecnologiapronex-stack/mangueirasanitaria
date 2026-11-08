@@ -1,0 +1,103 @@
+---
+import { NAV, CONTATO } from "../data/site";
+import Icone from "./Icone.astro";
+const atual = Astro.url.pathname.replace(/\/$/, "") || "/";
+const ativo = (href: string) => atual === href || (href !== "/" && atual.startsWith(href + "/"));
+---
+<header class="cab">
+  <div class="wrap cab-in">
+    <a href="/" class="marca" aria-label="Mangueiras Sanitárias Pronex, página inicial">
+      <img src="/img/logo-pronex.webp" alt="Pronex" width="460" height="109" />
+      <span class="marca-div" aria-hidden="true"></span>
+      <span class="marca-txt">Mangueiras<br />Sanitárias</span>
+    </a>
+    <nav class="nav" aria-label="Principal" id="menu-principal">
+      <ul>
+        {NAV.map((item) => (
+          <li class={item.sub ? "tem-sub" : ""}>
+            <a href={item.href} aria-current={ativo(item.href) ? "page" : undefined}>{item.label}</a>
+            {item.sub && (
+              <ul class="sub">
+                {item.sub.map((s) => <li><a href={s.href}>{s.label}</a></li>)}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+      <div class="nav-acoes-movel">
+        <a class="btn btn-pri" href="/orcamento">Solicitar orçamento</a>
+        <a class="btn btn-sec" href={CONTATO.telefoneHref} data-evento="contact_click" data-canal="telefone" data-origem="menu">{CONTATO.telefone}</a>
+      </div>
+    </nav>
+    <div class="cab-acoes">
+      <a class="cab-tel" href={CONTATO.telefoneHref} data-evento="contact_click" data-canal="telefone" data-origem="cabecalho">{CONTATO.telefone}</a>
+      <a class="btn btn-pri" href="/orcamento">Solicitar orçamento</a>
+    </div>
+    <button class="menu-btn" type="button" aria-controls="menu-principal" aria-expanded="false">
+      <span class="ico-abrir"><Icone nome="menu" /></span><span class="ico-fechar"><Icone nome="fechar" /></span>
+      <span class="sr-only">Menu</span>
+    </button>
+  </div>
+</header>
+
+<style>
+  .cab { position: sticky; top: 0; z-index: 40; background: #fff; border-bottom: 1px solid var(--linha); }
+  .cab-in { display: flex; align-items: center; gap: 24px; min-height: 76px; }
+  .marca { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--tinta); flex: none; }
+  .marca img { height: 32px; width: auto; }
+  .marca-div { width: 1px; height: 32px; background: var(--linha); }
+  .marca-txt { font-weight: 600; font-size: 14.5px; line-height: 1.15; }
+  .nav { flex: 1; }
+  .nav > ul { list-style: none; padding: 0; display: flex; gap: 4px 22px; justify-content: center; }
+  .nav a { color: var(--tinta); text-decoration: none; font-weight: 500; font-size: 15px; display: block; padding: 10px 0; }
+  .nav a:hover, .nav a[aria-current="page"] { color: var(--azul); }
+  .nav a[aria-current="page"] { box-shadow: inset 0 -2px 0 var(--azul); }
+  .tem-sub { position: relative; }
+  .sub { list-style: none; padding: 8px; margin: 0; position: absolute; left: -12px; top: 100%; min-width: 280px; background: #fff; border: 1px solid var(--linha); border-radius: 10px; box-shadow: var(--sombra); display: none; }
+  .sub a { padding: 9px 12px; border-radius: 6px; font-size: 14.5px; }
+  .sub a:hover { background: var(--azul-claro); }
+  .tem-sub:hover .sub, .tem-sub:focus-within .sub { display: block; }
+  .cab-acoes { display: flex; align-items: center; gap: 16px; flex: none; }
+  .cab-tel { font-weight: 600; font-size: 14.5px; color: var(--tinta); text-decoration: none; white-space: nowrap; }
+  .menu-btn { display: none; margin-left: auto; width: 46px; height: 46px; border: 1px solid var(--linha); background: #fff; border-radius: 8px; color: var(--tinta); cursor: pointer; align-items: center; justify-content: center; }
+  .menu-btn :global(svg) { width: 22px; height: 22px; }
+  .ico-fechar { display: none; }
+  .nav-acoes-movel { display: none; }
+
+  @media (max-width: 1080px) {
+    .cab-tel { display: none; }
+    .nav > ul { gap: 4px 16px; }
+  }
+  @media (max-width: 920px) {
+    .cab-in { min-height: 64px; }
+    .cab-acoes { display: none; }
+    .menu-btn { display: inline-flex; }
+    .nav { display: none; position: absolute; left: 0; right: 0; top: 100%; background: #fff; border-bottom: 1px solid var(--linha); padding: 8px 16px 20px; max-height: calc(100vh - 64px); overflow-y: auto; box-shadow: var(--sombra); }
+    :global(.menu-aberto) .nav { display: block; }
+    :global(.menu-aberto) .ico-abrir { display: none; }
+    :global(.menu-aberto) .ico-fechar { display: inline; }
+    .nav > ul { flex-direction: column; gap: 0; }
+    .nav > ul > li { border-bottom: 1px solid var(--linha); }
+    .nav a { padding: 14px 0; font-size: 16px; }
+    .sub { display: block; position: static; box-shadow: none; border: 0; padding: 0 0 8px 12px; min-width: 0; }
+    .sub a { padding: 8px 0; color: var(--texto-2); }
+    .nav a[aria-current="page"] { box-shadow: none; }
+    .nav-acoes-movel { display: flex; flex-direction: column; gap: 10px; padding-top: 16px; }
+  }
+</style>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>(".menu-btn");
+  const cab = document.querySelector(".cab");
+  btn?.addEventListener("click", () => {
+    const aberto = cab?.classList.toggle("menu-aberto") ?? false;
+    btn.setAttribute("aria-expanded", String(aberto));
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && cab?.classList.contains("menu-aberto")) {
+      cab.classList.remove("menu-aberto");
+      btn?.setAttribute("aria-expanded", "false");
+      btn?.focus();
+    }
+  });
+</script>

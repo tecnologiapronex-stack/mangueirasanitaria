@@ -1,0 +1,18 @@
+---
+export interface Pergunta { p: string; r: string; }
+interface Props { itens: Pergunta[]; titulo?: string; id?: string; }
+const { itens, titulo = "Perguntas frequentes", id = "perguntas" } = Astro.props;
+---
+<section class="secao" aria-labelledby={id}>
+  <div class="wrap pilha-lg">
+    <h2 id={id}>{titulo}</h2>
+    <div class="faq">
+      {itens.map((i) => (
+        <details>
+          <summary>{i.p}</summary>
+          <div><p set:html={i.r} /></div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

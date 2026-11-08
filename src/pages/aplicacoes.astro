@@ -1,0 +1,74 @@
+---
+import Base from "../layouts/Base.astro";
+import Migalhas from "../components/Migalhas.astro";
+import FaixaContato from "../components/FaixaContato.astro";
+import { FLUIDOS_FICHA, CONDICOES } from "../data/site";
+const crumbs = [{ label: "Aplicações" }];
+const segmentos = [
+  { t: "Laticínios", l: "FlexMilk", href: "/flexmilk", d: "Recepção e transferência de leite, iogurte e derivados entre tanques, bombas e caminhões." },
+  { t: "Alimentos e bebidas", l: "FlexFood", href: "/flexfood", d: "Transferência de sucos, refrigerantes, cerveja, vinho, água potável, óleos e alimentos gordurosos." },
+  { t: "Farmacêutico e cosmético", l: "FlexPharma", href: "/flexpharma", d: "Transferência de fluidos em áreas de produção farmacêutica e cosmética, com documentação técnica disponível." },
+];
+---
+<Base
+  title="Aplicações da mangueira sanitária: laticínios, alimentos, bebidas, farma e cosméticos | Pronex"
+  description="Onde usar as mangueiras sanitárias FlexMilk, FlexFood e FlexPharma: sucção e descarga de leite, sucos, cerveja, vinho, álcool até 98%, óleos e mais. Veja a linha indicada para cada ambiente."
+  migalhas={crumbs}
+>
+  <section class="hero">
+    <div class="wrap"><Migalhas itens={crumbs} /></div>
+    <div class="wrap" style="padding-top:32px;padding-bottom:64px">
+      <div class="hero-txt" style="max-width:820px">
+        <span class="sobre">Aplicações</span>
+        <h1>Uma construção, três ambientes de processo</h1>
+        <p class="lead">As três linhas têm a mesma construção e a mesma tabela técnica. O que muda é o ambiente em que cada uma trabalha e o que a sua equipe precisa saber antes de especificar. Escolha o seu segmento para ver a linha indicada.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao" aria-labelledby="t-seg">
+    <div class="wrap pilha-lg">
+      <h2 id="t-seg">Por segmento</h2>
+      <div class="grade-3">
+        {segmentos.map((s) => (
+          <a class="cartao" href={s.href}><span class="etiqueta">{s.l}</span><h3>{s.t}</h3><p>{s.d}</p><span class="seta">Ver {s.l} →</span></a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="secao branco" aria-labelledby="t-fluidos">
+    <div class="wrap duas">
+      <div class="pilha">
+        <h2 id="t-fluidos">Fluidos citados na ficha técnica</h2>
+        <p>A ficha de janeiro de 2025 lista estes fluidos para a mangueira:</p>
+        <ul class="lista-check">{FLUIDOS_FICHA.map((f) => <li>{f}</li>)}</ul>
+        <p class="nota">Esta lista não cobre todos os fluidos possíveis. Para outro fluido, ou para condições de temperatura, concentração e limpeza do seu processo, consulte a equipe técnica antes de especificar.</p>
+      </div>
+      <div class="pilha">
+        <h2>Tipos de operação</h2>
+        <p>A ficha indica uso em <strong>sucção e descarga</strong>, com vácuo de até {CONDICOES.vacuo} e pressão de trabalho de {CONDICOES.pressaoTrabalho}. Operações típicas:</p>
+        <ul class="lista-check">
+          <li>Carga e descarga de caminhões-tanque</li>
+          <li>Transferência entre tanques e equipamentos</li>
+          <li>Ligação flexível na entrada e na saída de bombas</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao" aria-labelledby="t-levar">
+    <div class="wrap pilha-lg">
+      <h2 id="t-levar">O que levar para a conversa técnica</h2>
+      <ol class="lista-num">
+        <li>O fluido e a temperatura de trabalho.</li>
+        <li>A pressão de trabalho e se há sucção.</li>
+        <li>A rotina de limpeza: produtos, concentração, temperatura e tempo.</li>
+        <li>A bitola, o comprimento e as conexões dos dois lados.</li>
+      </ol>
+      <p class="aviso">A indicação de linha por segmento orienta a escolha. A aplicação final é validada pela equipe técnica com os dados do seu processo.</p>
+    </div>
+  </section>
+
+  <FaixaContato titulo="Conte como é o seu processo" texto="Com o fluido, a temperatura e a rotina de limpeza, a equipe indica a linha e as conexões." origem="aplicacoes" />
+</Base>

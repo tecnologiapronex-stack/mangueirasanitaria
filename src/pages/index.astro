@@ -1,0 +1,146 @@
+---
+import Base from "../layouts/Base.astro";
+import Icone from "../components/Icone.astro";
+import Faq from "../components/Faq.astro";
+import FaixaContato from "../components/FaixaContato.astro";
+import { LINHAS, FAMILIAS } from "../data/site";
+import { faqLd } from "../scripts/ld";
+
+const segmentos = [
+  { nome: "Laticínios", texto: "Condução de leite e derivados em laticínios e cooperativas.", href: "/flexmilk", icone: "M8 3h8M9 3v4l-3 4v10h12V11l-3-4V3M6 14h12" },
+  { nome: "Alimentos e bebidas", texto: "Transferência de bebidas, sucos, óleos e insumos alimentícios líquidos.", href: "/flexfood", icone: "M7 3h10l-1 18H8L7 3zM7.5 9h9" },
+  { nome: "Indústria farmacêutica", texto: "Transferência de produtos em ambientes onde pureza e higiene orientam a especificação.", href: "/flexpharma", icone: "M4 12.5a3.5 3.5 0 0 1 3.5-3.5h9a3.5 3.5 0 0 1 0 7h-9A3.5 3.5 0 0 1 4 12.5zM12 9v7" },
+  { nome: "Indústria cosmética", texto: "Transferência de produtos a granel em linhas de fabricação e envase.", href: "/flexpharma", icone: "M9 3h6v4H9zM7 7h10v14H7z" },
+];
+
+const especificar = [
+  ["Fluido", "o que passa pela mangueira e em que concentração."],
+  ["Temperatura", "de operação e de limpeza."],
+  ["Pressão ou vácuo", "a mangueira trabalha em descarga, em sucção ou nos dois?"],
+  ["Diâmetro", "bitola da linha ou da conexão existente."],
+  ["Comprimento", "distância real entre os pontos, com folga para manuseio."],
+  ["Conexões A e B", "padrão de cada extremidade; podem ser diferentes."],
+  ["Limpeza", "método (CIP, vapor, manual), produtos e temperaturas."],
+];
+
+const faq = [
+  { p: "As três linhas têm características técnicas diferentes?", r: "Não. FlexMilk, FlexFood e FlexPharma têm a mesma construção e a mesma ficha técnica. Cada linha é dedicada a um ambiente de aplicação, o que orienta a especificação e o atendimento." },
+  { p: "A Pronex fornece a mangueira já montada?", r: "Sim. A Pronex fornece mangotes sob medida, com as conexões escolhidas para cada extremidade." },
+  { p: "Posso pedir conexões diferentes em cada ponta?", r: "Sim. No orçamento você informa a conexão da extremidade A e a da extremidade B separadamente." },
+  { p: "Como identifico a conexão que já tenho?", r: 'Envie uma foto da peça com uma régua ao lado e, se houver, a marcação gravada nela. Veja também o guia <a href="/conexoes#identificar">Como identificar sua conexão</a>.' },
+  { p: "A mangueira trabalha em sucção?", r: "Sim. A ficha técnica indica uso em sucção e descarga, com vácuo de 0,9 bar em todas as bitolas." },
+];
+---
+<Base
+  title="Mangueiras sanitárias FlexMilk, FlexFood e FlexPharma | Pronex"
+  description="Mangueiras sanitárias atóxicas FlexMilk, FlexFood e FlexPharma e conexões Tri-Clamp, SMS, DIN, RJT, BSP, NPT e Camlock. Especifique com a equipe técnica da Pronex."
+  jsonld={[faqLd(faq)]}
+>
+  <section class="hero">
+    <div class="wrap hero-in">
+      <div class="hero-txt">
+        <span class="sobre">FlexMilk · FlexFood · FlexPharma</span>
+        <h1>Mangueiras sanitárias e conexões para o seu processo industrial.</h1>
+        <p class="lead">Conheça as linhas FlexMilk, FlexFood e FlexPharma e consulte a Pronex para especificar mangueiras e conexões conforme sua aplicação.</p>
+        <div class="botoes">
+          <a class="btn btn-pri btn-lg" href="/orcamento">Solicitar orçamento <Icone nome="seta" /></a>
+          <a class="btn btn-sec btn-lg" href="#linhas">Conhecer as linhas</a>
+        </div>
+        <div class="selos"><span>Grupo Pronex desde 2012</span><span>Mangotes sob medida</span><span>Atendimento para todo o Brasil</span></div>
+      </div>
+      <figure class="hero-fig">
+        <div class="hero-img">
+          <img src="/img/mangueira-u.webp" alt="Mangueira sanitária de capa azul com terminais em aço inox nas duas extremidades" width="572" height="353" fetchpriority="high" />
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="secao" aria-labelledby="t-aplicacao">
+    <div class="wrap pilha-lg">
+      <div class="cab-secao">
+        <h2 id="t-aplicacao">Qual é a sua aplicação?</h2>
+        <p>Comece pelo segmento e veja as linhas que podem ser avaliadas para o seu processo.</p>
+      </div>
+      <div class="grade">
+        {segmentos.map((s) => (
+          <a class="cartao" href={s.href}>
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--azul)" stroke-width="1.6" aria-hidden="true"><path d={s.icone} /></svg>
+            <h3>{s.nome}</h3>
+            <p>{s.texto}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="secao branco" id="linhas" aria-labelledby="t-linhas">
+    <div class="wrap pilha-lg">
+      <div class="cab-secao">
+        <h2 id="t-linhas">Três linhas, três ambientes de aplicação</h2>
+        <p>As linhas FlexMilk, FlexFood e FlexPharma têm a mesma construção e a mesma ficha técnica. Cada uma é dedicada a um ambiente de aplicação, para que você encontre informações e atendimento voltados ao seu processo.</p>
+      </div>
+      <div class="grade-3">
+        {LINHAS.map((l) => (
+          <a class="cartao linha-card" href={`/${l.slug}`} data-evento="view_line" data-linha={l.slug} data-origem="home">
+            <img src={l.logo} alt={l.nome} height="56" loading="lazy" />
+            <span class="etiqueta">{l.segmento}</span>
+            <p>{l.resumo}</p>
+            <span class="seta">Ver a linha {l.nome} →</span>
+          </a>
+        ))}
+      </div>
+      <p><a href="/mangueiras-sanitarias#comparar">Comparar as linhas</a></p>
+    </div>
+  </section>
+
+  <section class="secao" aria-labelledby="t-conex">
+    <div class="wrap duas">
+      <div class="pilha">
+        <img src="/img/logo-conex.webp" alt="Conexões ConeX by Pronex" width="200" height="77" loading="lazy" style="height:48px;width:auto" />
+        <h2 id="t-conex">Conexões ConeX</h2>
+        <p class="lead">Kits para montar a mangueira no padrão do seu equipamento, com espigão em aço inox 316 na parte em contato com o produto e capa em inox 304.</p>
+        <div class="aviso"><strong>Medida nominal igual não garante compatibilidade.</strong> Na dúvida, envie uma foto da conexão que você já usa.</div>
+        <div class="foto"><img src="/img/montagens.webp" alt="Mangueiras montadas com terminais sanitários em aço inox" width="258" height="220" loading="lazy" /></div>
+      </div>
+      <div class="grade" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+        {FAMILIAS.map((f) => (
+          <a class="cartao" href={`/conexoes/${f.slug}`}>
+            <h3>{f.nome}</h3>
+            <span class="etiqueta">{f.referencia}</span>
+            <p>{f.card}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="secao branco" aria-labelledby="t-espec">
+    <div class="wrap pilha-lg">
+      <div class="cab-secao">
+        <h2 id="t-espec">O que informar para especificar</h2>
+        <p>Quanto mais completo o pedido, mais rápida a análise. Se não souber algum dado, a equipe Pronex ajuda a levantar.</p>
+      </div>
+      <ol class="lista-num">
+        {especificar.map(([t, d]) => <li><strong>{t}</strong>: {d}</li>)}
+      </ol>
+      <div><a class="btn btn-pri btn-lg" href="/orcamento">Começar a especificação <Icone nome="seta" /></a></div>
+    </div>
+  </section>
+
+  <section class="secao" aria-labelledby="t-pronex">
+    <div class="wrap"><div class="pilha" style="max-width:860px">
+      <span class="sobre">Atendimento Grupo Pronex</span>
+      <h2 id="t-pronex">Especificação com quem conhece o processo</h2>
+      <p class="lead">Desde 2012, a Pronex reúne soluções para fluidos e processos industriais em São Paulo, atendendo indústrias alimentícias, farmacêuticas, cosméticas e químicas em todo o Brasil. Itens "conforme o modelo" ou "sob consulta" são definidos no dimensionamento feito pela engenharia Pronex, de acordo com a aplicação.</p>
+      <p><a href="/sobre">Conheça a Pronex</a></p>
+    </div></div>
+  </section>
+
+  <Faq itens={faq} />
+  <FaixaContato origem="home" />
+</Base>
+
+<style>
+  .linha-card img { height: 56px; width: auto; object-fit: contain; object-position: left; }
+</style>

@@ -1,0 +1,72 @@
+---
+import Base from "../../layouts/Base.astro";
+import Migalhas from "../../components/Migalhas.astro";
+import FaixaContato from "../../components/FaixaContato.astro";
+import Icone from "../../components/Icone.astro";
+import { FAMILIAS, LINHAS, MATERIAL_KIT, AVISO_COMPATIBILIDADE, CONDICOES, type Familia } from "../../data/site";
+
+export function getStaticPaths() {
+  return FAMILIAS.map((f) => ({ params: { familia: f.slug }, props: { f } }));
+}
+const { f } = Astro.props as { f: Familia };
+const outras = FAMILIAS.filter((x) => x.slug !== f.slug);
+const orc = `/orcamento?pontaA=${f.slug}`;
+const crumbs = [{ label: "Conexões", href: "/conexoes" }, { label: f.nome }];
+---
+<Base title={`${f.h1} | Pronex`} description={f.metaDescription} migalhas={crumbs}>
+  <section class="hero">
+    <div class="wrap"><Migalhas itens={crumbs} /></div>
+    <div class="wrap hero-in" style="padding-top:32px">
+      <div class="hero-txt">
+        <span class="sobre">Conexões ConeX by Pronex · {f.nome}</span>
+        <h1>{f.h1}</h1>
+        <p class="lead">{f.abertura}</p>
+        <div class="destaques"><span>{f.referencia}</span><span>Inox 316 + 304</span><span>{CONDICOES.bitolas}</span></div>
+        <div class="botoes">
+          <a class="btn btn-pri btn-lg" href={orc}>Pedir mangueira com {f.nome} <Icone nome="seta" /></a>
+        </div>
+      </div>
+      <figure class="hero-fig"><div class="hero-img"><img src="/img/montagem-close.webp" alt="Terminal sanitário em inox montado na mangueira" width="238" height="232" fetchpriority="high" /></div><figcaption class="pequeno muted" style="margin-top:8px">Imagem ilustrativa de montagem. A peça de cada padrão pode ter outro formato.</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="secao" aria-label={`Detalhes da conexão ${f.nome}`}>
+    <div class="wrap duas">
+      <div class="pilha">
+        <h2>Quando escolher</h2>
+        <p class="lead">{f.quando}</p>
+        <h2 style="margin-top:16px">O que informar no pedido</h2>
+        <p class="lead">{f.informe}</p>
+        {f.pendente && <p class="aviso aviso-alerta">{f.pendente}</p>}
+        {f.aviso && <p class="aviso aviso-alerta">{f.aviso}</p>}
+      </div>
+      <div class="pilha">
+        <h2>Com que linhas funciona</h2>
+        <p>A família {f.nome} pode ser montada nas três linhas, nas bitolas de {CONDICOES.bitolas}, sujeito à confirmação da equipe técnica para cada combinação.</p>
+        <div class="grade" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
+          {LINHAS.map((l) => <a class="cartao" href={`/${l.slug}`}><h3>{l.nome}</h3><p>{l.segmento}</p></a>)}
+        </div>
+        <h2 style="margin-top:16px">Material</h2>
+        <p>Kit com {MATERIAL_KIT.charAt(0).toLowerCase() + MATERIAL_KIT.slice(1)}. Outro material, como 316L, é tratado na proposta.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao-sm">
+    <div class="wrap pilha">
+      <p class="aviso">{AVISO_COMPATIBILIDADE}</p>
+      <p><a href="/conexoes#identificar">Como identificar a sua conexão</a></p>
+    </div>
+  </section>
+
+  <section class="secao-sm branco" aria-labelledby="t-outras">
+    <div class="wrap pilha">
+      <h2 id="t-outras" style="font-size:22px">Outras famílias de conexão</h2>
+      <div class="grade" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr))">
+        {outras.map((o) => <a class="cartao" href={`/conexoes/${o.slug}`}><h3>{o.nome}</h3><span class="etiqueta">{o.referencia}</span></a>)}
+      </div>
+    </div>
+  </section>
+
+  <FaixaContato titulo={`Peça a sua mangueira com ponta ${f.nome}`} texto={`O pedido já chega com ${f.nome} na ponta A. Você escolhe a ponta B.`} orcamentoHref={orc} orcamentoLabel="Montar o pedido" origem={`conexao_${f.slug}`} />
+</Base>

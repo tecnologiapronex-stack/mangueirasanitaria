@@ -1,0 +1,39 @@
+---
+const ativo = Boolean(import.meta.env.PUBLIC_GTM_ID);
+---
+{ativo && (
+  <div class="cookies" role="region" aria-label="Preferências de cookies" hidden>
+    <p>Usamos cookies para medir o uso do site e melhorar o conteúdo. Você escolhe. <a href="/politica-de-privacidade">Política de privacidade</a></p>
+    <div class="botoes">
+      <button type="button" class="btn btn-pri" data-cookies="aceito">Aceitar</button>
+      <button type="button" class="btn btn-sec" data-cookies="recusado">Recusar</button>
+    </div>
+  </div>
+)}
+<style>
+  .cookies { position: fixed; left: 16px; bottom: 16px; z-index: 60; max-width: 460px; background: #fff; border: 1px solid var(--linha); border-radius: 12px; box-shadow: var(--sombra); padding: 18px; display: flex; flex-direction: column; gap: 14px; font-size: 15px; }
+  .cookies[hidden] { display: none; }
+  .cookies .btn { min-height: 44px; }
+  @media (max-width: 920px) { .cookies { right: 16px; bottom: calc(80px + env(safe-area-inset-bottom)); max-width: none; } }
+</style>
+<script>
+  const KEY = "consentimento-cookies";
+  const banner = document.querySelector<HTMLElement>(".cookies");
+  const gtag = (window as unknown as { gtag?: (...a: unknown[]) => void }).gtag;
+  let escolha: string | null = null;
+  try { escolha = localStorage.getItem(KEY); } catch { /* sem storage */ }
+  if (banner && !escolha) banner.hidden = false;
+  banner?.querySelectorAll<HTMLButtonElement>("[data-cookies]").forEach((b) =>
+    b.addEventListener("click", () => {
+      const v = b.dataset.cookies!;
+      try { localStorage.setItem(KEY, v); } catch { /* ignore */ }
+      gtag?.("consent", "update", { analytics_storage: v === "aceito" ? "granted" : "denied" });
+      banner.hidden = true;
+    }),
+  );
+  document.querySelectorAll("[data-abrir-cookies]").forEach((b) =>
+    b.addEventListener("click", () => {
+      if (banner) banner.hidden = false;
+    }),
+  );
+</script>

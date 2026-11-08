@@ -1,0 +1,53 @@
+---
+import Base from "../layouts/Base.astro";
+import Migalhas from "../components/Migalhas.astro";
+import { EMPRESA, CONTATO } from "../data/site";
+const crumbs = [{ label: "Política de privacidade" }];
+const temMedicao = Boolean(import.meta.env.PUBLIC_GTM_ID);
+---
+<Base
+  title="Política de privacidade | Mangueiras Sanitárias Pronex"
+  description="Como o site mangueirasanitaria.com.br, do Grupo Pronex, trata dados pessoais, cookies e contatos, conforme a LGPD."
+  migalhas={crumbs}
+>
+  <section class="secao branco">
+    <div class="wrap">
+      <Migalhas itens={crumbs} />
+      <article class="prosa" style="margin-top:24px">
+        <h1>Política de privacidade</h1>
+        <p class="muted pequeno">Versão de revisão. Atualizada em [data da publicação].</p>
+
+        <h2>1. Quem somos</h2>
+        <p>Este site é mantido por {EMPRESA.razaoSocial}, CNPJ {EMPRESA.cnpj}, {EMPRESA.endereco}, {EMPRESA.cidade}, {EMPRESA.uf}, que é a controladora dos dados pessoais tratados aqui, nos termos da Lei 13.709/2018 (LGPD).</p>
+
+        <h2>2. Dados que tratamos</h2>
+        <p><strong>Pedido de orçamento.</strong> O montador de pedido funciona no seu navegador. O site não grava nem envia os dados que você digita: ao final, você mesmo envia o texto pelo WhatsApp ou pelo seu e-mail. A partir daí, recebemos os dados que você escolheu mandar (como nome, empresa, CNPJ, cidade, telefone ou e-mail e dados técnicos do pedido) pelo canal que você usou.</p>
+        <p><strong>Contato direto.</strong> Quando você liga, escreve ou chama no WhatsApp, recebemos os dados dessa conversa.</p>
+        <p><strong>Navegação.</strong> {temMedicao ? "Com o seu consentimento, usamos cookies de medição (Google Analytics, via Google Tag Manager) para saber quais páginas são visitadas e de onde vêm as visitas." : "No momento, o site não usa cookies de medição nem de publicidade."} O servidor de hospedagem registra dados técnicos de acesso, como endereço IP e navegador, para segurança.</p>
+
+        <h2>3. Para que usamos</h2>
+        <p>Responder ao seu pedido e preparar a proposta (procedimentos preliminares a contrato); manter a segurança do site (legítimo interesse){temMedicao && "; medir o uso do site (consentimento)"}.</p>
+
+        <h2>4. Com quem compartilhamos</h2>
+        <p>Com fornecedores que operam os canais em nosso nome: hospedagem do site (Hostinger), e-mail corporativo (Microsoft) e WhatsApp (Meta), quando você escolhe esse canal{temMedicao && "; medição de audiência (Google), só com consentimento"}. Alguns desses serviços podem armazenar dados fora do Brasil. Não vendemos dados pessoais.</p>
+
+        <h2>5. Por quanto tempo guardamos</h2>
+        <p>[a definir com o jurídico da Pronex: prazo para pedidos sem proposta e para clientes.]</p>
+
+        <h2>6. Seus direitos</h2>
+        <p>Você pode pedir acesso, correção, exclusão, portabilidade e informação sobre compartilhamento, e revogar consentimentos a qualquer momento, pelo e-mail <a href={`mailto:${CONTATO.email}`}>{CONTATO.email}</a>.</p>
+
+        {temMedicao && (<><h2>7. Cookies</h2><p>Usamos cookies necessários para o site funcionar e, com o seu consentimento, cookies de medição. Você pode mudar a escolha pelo link "Preferências de cookies" no rodapé.</p></>)}
+
+        <h2>{temMedicao ? "8" : "7"}. Segurança</h2>
+        <p>O site é servido por conexão criptografada (HTTPS).</p>
+
+        <h2>{temMedicao ? "9" : "8"}. Encarregado (DPO)</h2>
+        <p>[a definir: nome e e-mail do encarregado.]</p>
+
+        <h2>{temMedicao ? "10" : "9"}. Mudanças</h2>
+        <p>Esta política pode ser atualizada. A data no topo indica a versão vigente.</p>
+      </article>
+    </div>
+  </section>
+</Base>

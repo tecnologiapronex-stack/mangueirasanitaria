@@ -1,0 +1,91 @@
+---
+import Base from "../layouts/Base.astro";
+import Migalhas from "../components/Migalhas.astro";
+import TabelaTecnica from "../components/TabelaTecnica.astro";
+import FaixaContato from "../components/FaixaContato.astro";
+import Icone from "../components/Icone.astro";
+import { CONSTRUCAO, CONDICOES, LINHAS, AVISO_INDICACAO, CONFORMIDADE } from "../data/site";
+const ambiente: Record<string, string> = {
+  flexmilk: "Laticínios e cooperativas de leite",
+  flexfood: "Fábricas de alimentos, bebidas e cervejarias",
+  flexpharma: "Indústrias farmacêutica e cosmética",
+};
+const linhasComp = [
+  ["Uso", CONDICOES.uso],
+  ["Bitolas", CONDICOES.bitolas],
+  ["Pressão de trabalho", CONDICOES.pressaoTrabalho],
+  ["Vácuo", CONDICOES.vacuo],
+  ["Temperatura", "−30 a 120 °C"],
+  ["Tubo interno", "Borracha branca EPDM ou butílica"],
+  ["Comprimento", "Sob medida"],
+];
+---
+<Base
+  title="Mangueira sanitária atóxica de sucção e descarga | Pronex"
+  description='Mangueira sanitária atóxica de sucção e descarga, de 3/4" a 3", 10 bar e vácuo de 0,9 bar. Compare FlexMilk, FlexFood e FlexPharma e fale com a Pronex.'
+  migalhas={[{ label: "Mangueiras sanitárias" }]}
+>
+  <section class="hero">
+    <div class="wrap"><Migalhas itens={[{ label: "Mangueiras sanitárias" }]} /></div>
+    <div class="wrap hero-in" style="padding-top:32px">
+      <div class="hero-txt">
+        <span class="sobre">FlexMilk · FlexFood · FlexPharma</span>
+        <h1>Mangueiras sanitárias atóxicas</h1>
+        <p class="lead">Mangueiras de sucção e descarga para a transferência de alimentos, bebidas e produtos farmacêuticos e cosméticos líquidos. Tubo interno liso de borracha branca atóxica, reforço têxtil com arame helicoidal e capa azul resistente à abrasão.</p>
+        <div class="botoes">
+          <a class="btn btn-pri btn-lg" href="/orcamento">Solicitar orçamento <Icone nome="seta" /></a>
+          <a class="btn btn-sec btn-lg" href="#comparar">Comparar as linhas</a>
+        </div>
+      </div>
+      <figure class="hero-fig"><div class="hero-img"><img src="/img/mangueira-u.webp" alt="Mangueira sanitária de capa azul com terminais em aço inox" width="572" height="353" fetchpriority="high" /></div></figure>
+    </div>
+  </section>
+
+  <section class="secao" aria-labelledby="t-oque">
+    <div class="wrap duas">
+      <div class="pilha">
+        <h2 id="t-oque">O que é uma mangueira sanitária</h2>
+        <p class="lead">É a mangueira usada para conduzir produtos que serão consumidos ou aplicados, como leite, bebidas e cosméticos. Por isso, o material em contato com o produto precisa ser atóxico e não transferir sabor ou odor, e a superfície interna precisa ser lisa para facilitar a limpeza.</p>
+        <p>Na escolha, avalie também a pressão, a temperatura, a rotina de higienização e o padrão das conexões da sua linha.</p>
+      </div>
+      <div class="pilha">
+        <h2>Como a mangueira é construída</h2>
+        <ul class="lista-check">{CONSTRUCAO.map((c) => <li><strong>{c.item}</strong>: {c.texto}</li>)}</ul>
+        <div class="foto"><img src="/img/mangueira-corte.webp" alt="Corte da mangueira: tubo interno branco, reforço e capa azul" width="390" height="111" loading="lazy" /></div>
+        <p class="pequeno muted">{CONFORMIDADE}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao branco" id="comparar" aria-labelledby="t-comparar">
+    <div class="wrap pilha-lg">
+      <div class="cab-secao">
+        <h2 id="t-comparar">Compare as linhas</h2>
+        <p>As três linhas compartilham a mesma ficha técnica. A diferença está no ambiente de aplicação a que cada uma é dedicada.</p>
+      </div>
+      <div class="tabela-wrap" role="region" aria-labelledby="t-comparar" tabindex="0">
+        <table class="tabela">
+          <thead><tr><th scope="col"><span class="sr-only">Característica</span></th>{LINHAS.map((l) => <th scope="col">{l.nome}</th>)}</tr></thead>
+          <tbody>
+            <tr><th scope="row">Ambiente de aplicação</th>{LINHAS.map((l) => <td>{ambiente[l.slug]}</td>)}</tr>
+            {linhasComp.map(([k, v]) => <tr><th scope="row">{k}</th>{LINHAS.map(() => <td>{v}</td>)}</tr>)}
+            <tr><th scope="row"><span class="sr-only">Página</span></th>{LINHAS.map((l) => <td><a href={`/${l.slug}`} data-evento="compare_lines" data-linha={l.slug}>Ver {l.nome}</a></td>)}</tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao" aria-labelledby="t-ficha">
+    <div class="wrap pilha-lg">
+      <div class="cab-secao">
+        <h2 id="t-ficha">Ficha técnica</h2>
+        <p>Tabela completa por bitola, conforme o DataSheet Pronex de janeiro de 2025.</p>
+      </div>
+      <TabelaTecnica />
+      <p class="aviso">{AVISO_INDICACAO}</p>
+    </div>
+  </section>
+
+  <FaixaContato origem="mangueiras" />
+</Base>

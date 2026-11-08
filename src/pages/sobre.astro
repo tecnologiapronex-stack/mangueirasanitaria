@@ -1,0 +1,54 @@
+---
+import Base from "../layouts/Base.astro";
+import Migalhas from "../components/Migalhas.astro";
+import FaixaContato from "../components/FaixaContato.astro";
+import { CONTATO, EMPRESA, whatsappUrl, WHATSAPP_SAUDACAO } from "../data/site";
+const crumbs = [{ label: "Sobre" }];
+---
+<Base
+  title="Sobre o Grupo Pronex | Mangueiras sanitárias e conexões"
+  description="Desde 2012, o Grupo Pronex fornece equipamentos industriais em São Paulo. Conheça quem está por trás das mangueiras sanitárias FlexMilk, FlexFood e FlexPharma."
+  migalhas={crumbs}
+>
+  <section class="hero">
+    <div class="wrap"><Migalhas itens={crumbs} /></div>
+    <div class="wrap" style="padding-top:32px;padding-bottom:64px">
+      <div class="hero-txt" style="max-width:820px">
+        <img src="/img/logo-pronex.webp" alt="Pronex" width="460" height="109" style="height:48px;width:auto" />
+        <span class="sobre">Sobre</span>
+        <h1>Grupo Pronex: força que movimenta a indústria</h1>
+        <p class="lead">Desde 2012, a Pronex importa e fornece equipamentos para a indústria. O site mangueirasanitaria.com.br reúne as linhas de mangueira sanitária e as conexões do grupo em um só lugar, com informação técnica e atendimento consultivo.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao" aria-labelledby="t-como">
+    <div class="wrap duas">
+      <div class="pilha">
+        <h2 id="t-como">Como trabalhamos</h2>
+        <ul class="lista-check">
+          <li><strong>Especificação antes da venda.</strong> A equipe técnica confere o fluido, as condições de uso e as conexões antes de fechar a proposta.</li>
+          <li><strong>Montagem sob medida.</strong> A mangueira sai na bitola, no comprimento e com as pontas pedidas.</li>
+          <li><strong>Documentação oficial.</strong> As fichas técnicas das linhas e das conexões ficam com a equipe técnica, que envia sob pedido.</li>
+        </ul>
+        <h2 style="margin-top:16px">Marcas do grupo neste site</h2>
+        <ul class="lista-check">
+          <li><strong>FlexMilk, FlexFood e FlexPharma</strong>: linhas de mangueira sanitária.</li>
+          <li><strong>Conexões ConeX by Pronex</strong>: kits de conexão.</li>
+        </ul>
+      </div>
+      <div class="cartao">
+        <h2 style="font-size:22px">Dados da empresa</h2>
+        <p style="color:var(--texto);font-size:16px">{EMPRESA.razaoSocial}<br />CNPJ {EMPRESA.cnpj}<br />{EMPRESA.endereco}, {EMPRESA.bairro}<br />{EMPRESA.cidade}, {EMPRESA.uf} · CEP {EMPRESA.cep}</p>
+        <p style="color:var(--texto);font-size:16px">
+          <a href={CONTATO.telefoneHref} data-evento="contact_click" data-canal="telefone" data-origem="sobre">{CONTATO.telefone}</a><br />
+          <a href={`mailto:${CONTATO.email}`} data-evento="contact_click" data-canal="email" data-origem="sobre">{CONTATO.email}</a><br />
+          <a href={whatsappUrl(WHATSAPP_SAUDACAO)} target="_blank" rel="noopener" data-evento="contact_click" data-canal="whatsapp" data-origem="sobre">WhatsApp {CONTATO.whatsapp}</a>
+        </p>
+        <p><a href={EMPRESA.siteInstitucional} target="_blank" rel="noopener">Conheça o site institucional do Grupo Pronex <span aria-hidden="true">↗</span><span class="sr-only">(abre outro site)</span></a></p>
+      </div>
+    </div>
+  </section>
+
+  <FaixaContato titulo="Fale com a equipe técnica" texto="Conte o que você precisa e receba uma proposta." origem="sobre" />
+</Base>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mangueirasanitaria.com.br/sitemap-index.xml
