@@ -1,0 +1,72 @@
+---
+import { CONTATO, EMPRESA, FAMILIAS, LINHAS, SITE, whatsappUrl, WHATSAPP_SAUDACAO } from "../data/site";
+const ano = new Date().getFullYear();
+const temCookies = Boolean(import.meta.env.PUBLIC_GTM_ID);
+---
+<footer class="rod">
+  <div class="wrap">
+    <div class="rod-topo">
+      <div class="rod-marca">
+        <img src="/img/logo-pronex.webp" alt="Pronex" width="460" height="109" loading="lazy" />
+        <p><strong>Mangueiras Sanitárias é um canal especializado do Grupo Pronex.</strong></p>
+        <address>
+          <a href={CONTATO.telefoneHref} data-evento="contact_click" data-canal="telefone" data-origem="rodape">{CONTATO.telefone}</a><br />
+          <a href={`mailto:${CONTATO.email}`} data-evento="contact_click" data-canal="email" data-origem="rodape">{CONTATO.email}</a><br />
+          <a href={whatsappUrl(WHATSAPP_SAUDACAO)} target="_blank" rel="noopener" data-evento="contact_click" data-canal="whatsapp" data-origem="rodape">WhatsApp {CONTATO.whatsapp}</a>
+        </address>
+      </div>
+      <nav class="rod-cols" aria-label="Rodapé">
+        <div>
+          <h2>Linhas</h2>
+          <ul>
+            {LINHAS.map((l) => <li><a href={`/${l.slug}`}>{l.nome}</a></li>)}
+            <li><a href="/mangueiras-sanitarias#comparar">Comparar as linhas</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Conexões</h2>
+          <ul>{FAMILIAS.map((f) => <li><a href={`/conexoes/${f.slug}`}>{f.nome}</a></li>)}</ul>
+        </div>
+        <div>
+          <h2>Apoio</h2>
+          <ul>
+            <li><a href="/aplicacoes">Aplicações</a></li>
+            <li><a href="/materiais-tecnicos">Materiais técnicos</a></li>
+            <li><a href="/orcamento">Orçamento</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Institucional</h2>
+          <ul>
+            <li><a href="/sobre">Sobre</a></li>
+            <li><a href="/politica-de-privacidade">Política de privacidade</a></li>
+            {temCookies && <li><button type="button" class="link-cookies" data-abrir-cookies>Preferências de cookies</button></li>}
+            <li><a href={EMPRESA.siteInstitucional} target="_blank" rel="noopener">pronex.com.br <span aria-hidden="true">↗</span><span class="sr-only">(abre outro site)</span></a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="rod-legal">
+      <p>{EMPRESA.razaoSocial} · CNPJ {EMPRESA.cnpj}<br />{EMPRESA.endereco} · {EMPRESA.bairro} · {EMPRESA.cidade}, {EMPRESA.uf} · CEP {EMPRESA.cep}</p>
+      <p>© {ano} {SITE.marca}. {SITE.tagline}.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .rod { background: #0a2547; color: #c9d9ee; font-size: 15px; padding: 56px 0 96px; }
+  .rod a, .link-cookies { color: #e6f0fb; text-decoration: none; }
+  .rod a:hover, .link-cookies:hover { color: #fff; text-decoration: underline; }
+  .link-cookies { background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
+  .rod-topo { display: grid; gap: 40px; grid-template-columns: minmax(260px, 1fr) 2fr; }
+  .rod-marca { display: flex; flex-direction: column; gap: 14px; }
+  .rod-marca img { height: 34px; width: auto; background: #fff; padding: 8px 12px; border-radius: 8px; box-sizing: content-box; }
+  .rod-marca strong { color: #fff; }
+  address { font-style: normal; line-height: 1.9; }
+  .rod-cols { display: grid; gap: 28px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  .rod-cols h2 { font: 500 12.5px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: #9cc3ee; margin-bottom: 14px; }
+  .rod-cols ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .rod-legal { margin-top: 40px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.12); display: flex; flex-wrap: wrap; gap: 12px 40px; justify-content: space-between; font-size: 13.5px; color: #9fb4cf; }
+  @media (max-width: 760px) { .rod-topo { grid-template-columns: 1fr; } }
+  @media (min-width: 921px) { .rod { padding-bottom: 56px; } }
+</style>

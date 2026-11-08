@@ -1,0 +1,26 @@
+---
+import { CONDICOES, TABELA } from "../data/site";
+interface Props { id?: string; }
+const { id = "tabela-tecnica" } = Astro.props;
+---
+<div class="pilha">
+  <div class="tabela-wrap" role="region" aria-labelledby={id} tabindex="0">
+    <table class="tabela">
+      <caption class="sr-only" id={id}>Tabela técnica por bitola, conforme DataSheet Pronex de janeiro de 2025</caption>
+      <thead>
+        <tr><th scope="col">Bitola</th><th scope="col">Ø interno</th><th scope="col">Ø externo</th><th scope="col">Parede</th><th scope="col">Peso</th><th scope="col">Vácuo</th><th scope="col">Raio de curvatura</th></tr>
+      </thead>
+      <tbody>
+        {TABELA.map((t) => (
+          <tr>
+            <th scope="row" class="num">{t.bitola}</th>
+            <td class="num">{t.di} mm</td><td class="num">{t.de} mm</td><td class="num">{t.parede} mm</td>
+            <td class="num">{t.peso} kg/m</td><td class="num">{CONDICOES.vacuo}</td><td class="num">{t.raio} mm</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p class="pequeno muted">Condições para todas as bitolas: pressão de trabalho de {CONDICOES.pressaoTrabalho}; pressão de ruptura de {CONDICOES.pressaoRuptura}; temperatura de {CONDICOES.temperatura} (pode ser esterilizada a 130 °C por no máximo 30 minutos); resistência à tração de {CONDICOES.tracao}. Outras bitolas sob consulta. Fonte: DataSheet Pronex, janeiro de 2025.</p>
+  <p class="nota">Pressão de trabalho é o limite para operação contínua; a pressão de ruptura é um valor de ensaio e não deve ser usada como referência de operação. Raio de curvatura é o menor raio em que a mangueira pode ser curvada sem dobrar.</p>
+</div>

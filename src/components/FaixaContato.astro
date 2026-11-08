@@ -1,0 +1,25 @@
+---
+import { CONTATO, whatsappUrl, WHATSAPP_SAUDACAO } from "../data/site";
+import Icone from "./Icone.astro";
+interface Props { titulo?: string; texto?: string; orcamentoHref?: string; orcamentoLabel?: string; origem?: string; }
+const {
+  titulo = "Precisa de orientação para especificar?",
+  texto = "Descreva o seu processo e a equipe técnica da Pronex retorna com uma indicação para avaliação.",
+  orcamentoHref = "/orcamento",
+  orcamentoLabel = "Solicitar orçamento",
+  origem = "faixa",
+} = Astro.props;
+---
+<section class="faixa" aria-labelledby="faixa-titulo">
+  <div class="wrap faixa-in">
+    <div>
+      <h2 id="faixa-titulo">{titulo}</h2>
+      <p>{texto}</p>
+    </div>
+    <div class="botoes">
+      <a class="btn btn-claro btn-lg" href={orcamentoHref}>{orcamentoLabel} <Icone nome="seta" /></a>
+      <a class="btn btn-wa btn-lg" href={whatsappUrl(WHATSAPP_SAUDACAO)} target="_blank" rel="noopener" data-evento="contact_click" data-canal="whatsapp" data-origem={origem}><Icone nome="wa" /> WhatsApp</a>
+      <a class="btn btn-contorno-claro btn-lg" href={CONTATO.telefoneHref} data-evento="contact_click" data-canal="telefone" data-origem={origem}><Icone nome="tel" /> {CONTATO.telefone}</a>
+    </div>
+  </div>
+</section>

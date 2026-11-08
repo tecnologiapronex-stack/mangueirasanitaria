@@ -1,0 +1,101 @@
+---
+import Base from "../layouts/Base.astro";
+import Migalhas from "../components/Migalhas.astro";
+import Faq from "../components/Faq.astro";
+import FaixaContato from "../components/FaixaContato.astro";
+import Icone from "../components/Icone.astro";
+import { FAMILIAS } from "../data/site";
+import { faqLd } from "../scripts/ld";
+const faq = [
+  { p: "Posso ter uma ponta Tri-Clamp e a outra roscada?", r: "Sim. No orçamento, a ponta A e a ponta B são escolhidas separadamente." },
+  { p: "A conexão é em 316 ou 316L?", r: "No kit padrão, o espigão é em inox 316 e a capa em inox 304. A ficha da mangueira também cita conectores em 304, 316 ou 316L conforme a necessidade. O material de cada pedido é informado na proposta." },
+  { p: "Como sei qual conexão eu tenho?", r: 'Siga o guia <a href="#identificar">Como identificar a sua conexão</a> e envie uma foto com uma régua ao lado. A equipe confirma o padrão com você.' },
+];
+---
+<Base
+  title="Conexões para mangueira sanitária: Tri-Clamp, SMS, DIN, RJT, BSP, NPT e Camlock | Pronex"
+  description="Kits de conexão ConeX by Pronex para mangueiras sanitárias, com espigão em inox 316 e capa em inox 304. Padrões TC ISO 2852, SMS 1145, DIN 11851 e 11864, RJT BS 1864, roscas BSP e NPT e Camlock."
+  migalhas={[{ label: "Conexões" }]}
+  jsonld={[faqLd(faq)]}
+>
+  <section class="hero">
+    <div class="wrap"><Migalhas itens={[{ label: "Conexões" }]} /></div>
+    <div class="wrap hero-in" style="padding-top:32px">
+      <div class="hero-txt">
+        <img src="/img/logo-conex.webp" alt="Conexões ConeX by Pronex" width="200" height="77" style="height:52px;width:auto" />
+        <span class="sobre">Conexões ConeX by Pronex</span>
+        <h1>A ponta certa para a sua linha de processo</h1>
+        <p class="lead">A mangueira só trabalha bem quando a conexão conversa com o equipamento. A Pronex fornece os kits de conexão das linhas FlexMilk, FlexFood e FlexPharma e entrega a mangueira montada na medida pedida.</p>
+        <div class="botoes">
+          <a class="btn btn-pri btn-lg" href="/orcamento">Pedir mangueira montada <Icone nome="seta" /></a>
+          <a class="btn btn-sec btn-lg" href="#identificar">Como identificar sua conexão</a>
+        </div>
+      </div>
+      <figure class="hero-fig"><div class="hero-img"><img src="/img/terminais.webp" alt="Terminais sanitários em aço inox para mangueira" width="332" height="317" fetchpriority="high" /></div></figure>
+    </div>
+  </section>
+
+  <section class="secao" aria-labelledby="t-familias">
+    <div class="wrap pilha-lg">
+      <div class="cab-secao"><h2 id="t-familias">Famílias disponíveis</h2></div>
+      <div class="grade">
+        {FAMILIAS.map((f) => (
+          <a class="cartao" href={`/conexoes/${f.slug}`} data-evento="view_connection" data-origem={f.slug}>
+            <h3>{f.nome}</h3><span class="etiqueta">{f.referencia}</span><p>{f.card}</p><span class="seta">Ver {f.nome} →</span>
+          </a>
+        ))}
+      </div>
+      <p class="nota">A tabela indica o padrão de referência de cada família. A compatibilidade com o seu equipamento é confirmada pela equipe técnica antes da proposta.</p>
+    </div>
+  </section>
+
+  <section class="secao branco" aria-labelledby="t-compoe">
+    <div class="wrap duas">
+      <div class="pilha">
+        <h2 id="t-compoe">O que compõe a ponta de uma mangueira</h2>
+        <p>Cada termo abaixo é um item diferente no pedido.</p>
+        <ul class="lista-check">
+          <li><strong>Terminal</strong>: a peça que liga a mangueira ao equipamento, no padrão escolhido (Tri-Clamp, SMS, DIN, RJT, rosca ou Camlock).</li>
+          <li><strong>Kit de conexão</strong>: o conjunto que a Pronex monta na mangueira, com espigão em aço inox 316 e capa em aço inox 304.</li>
+          <li><strong>Abraçadeira (clamp)</strong>: a peça que fecha a união Tri-Clamp entre dois terminais. Informe no pedido se precisa dela.</li>
+          <li><strong>Vedação (junta ou anel)</strong>: a peça entre as faces dos terminais. Informe no pedido se precisa dela.</li>
+          <li><strong>Fixação</strong>: a forma como espigão e capa ficam presos à mangueira na montagem.</li>
+        </ul>
+      </div>
+      <div class="pilha">
+        <h2>Materiais</h2>
+        <p>No kit padrão, o espigão é em inox 316 e a capa em inox 304. A ficha da mangueira também cita conectores em inox 304, 316 ou 316L, conforme a necessidade do processo. O material de cada pedido é confirmado na proposta.</p>
+        <div class="grade" style="grid-template-columns:1fr 1fr">
+          <figure class="foto" style="margin:0"><img src="/img/espigao-tc.webp" alt="Espigão em inox com face Tri-Clamp" width="194" height="159" loading="lazy" /></figure>
+          <figure class="foto" style="margin:0"><img src="/img/capa.webp" alt="Capa em inox do kit de conexão" width="150" height="180" loading="lazy" /></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao" id="identificar" aria-labelledby="t-ident">
+    <div class="wrap pilha-lg">
+      <div class="cab-secao"><h2 id="t-ident">Como identificar a sua conexão</h2></div>
+      <ol class="lista-num">
+        <li><strong>Veja como a ponta atual se prende.</strong> Abraçadeira articulada indica Tri-Clamp. Porca roscada sobre a união indica SMS, DIN ou RJT. Rosca direta na peça indica BSP ou NPT. Alavancas laterais indicam Camlock.</li>
+        <li><strong>Meça a peça.</strong> Anote o diâmetro externo da face ou da rosca e, se for rosca, quantos fios há por polegada.</li>
+        <li><strong>Fotografe.</strong> Uma foto de frente e outra de lado, com uma régua junto, já ajudam muito.</li>
+        <li><strong>Envie para a equipe.</strong> Mande as fotos pelo WhatsApp ou e-mail junto com o pedido. Na dúvida, escolha "Outra / não sei" no orçamento.</li>
+      </ol>
+      <p class="aviso aviso-alerta"><strong>Medida nominal igual não garante encaixe.</strong> Padrões diferentes podem ter a mesma bitola com faces, roscas e vedações diferentes.</p>
+    </div>
+  </section>
+
+  <section class="secao-sm branco" aria-labelledby="t-montada">
+    <div class="wrap duas" style="align-items:center">
+      <div class="pilha">
+        <h2 id="t-montada">Mangueira montada sob medida</h2>
+        <p class="lead">Você informa a linha, a bitola, o comprimento e as duas pontas, que podem ser diferentes entre si. A Pronex monta e entrega a mangueira pronta para instalar.</p>
+      </div>
+      <div class="foto"><img src="/img/montagem-engate.webp" alt="Mangueira sanitária montada com terminal em inox" width="218" height="274" loading="lazy" /></div>
+    </div>
+  </section>
+
+  <Faq itens={faq} />
+  <FaixaContato titulo="Monte a sua mangueira com as pontas certas" texto="Escolha a linha, a bitola, o comprimento e as duas pontas." orcamentoLabel="Pedir orçamento de mangueira montada" origem="conexoes" />
+</Base>

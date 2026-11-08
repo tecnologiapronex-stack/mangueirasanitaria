@@ -1,0 +1,107 @@
+---
+import "../styles/global.css";
+import { SITE, EMPRESA, CONTATO } from "../data/site";
+import Cabecalho from "../components/Cabecalho.astro";
+import Rodape from "../components/Rodape.astro";
+import BarraMovel from "../components/BarraMovel.astro";
+import WhatsAppFlutuante from "../components/WhatsAppFlutuante.astro";
+import Medicao from "../components/Medicao.astro";
+import BannerCookies from "../components/BannerCookies.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  /** Só a 404 usa noindex. Nunca ligar em páginas de produção. */
+  noindex?: boolean;
+  jsonld?: Record<string, unknown>[];
+  ogImage?: string;
+  migalhas?: { label: string; href?: string }[];
+}
+const { title, description, noindex = false, jsonld = [], ogImage = "/img/og-padrao.jpg", migalhas } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const canonical = new URL(path, SITE.url).href.replace(/\/$/, path === "/" ? "/" : "");
+
+const organizacao = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${SITE.url}/#organizacao`,
+  name: "Grupo Pronex",
+  legalName: EMPRESA.razaoSocial,
+  taxID: EMPRESA.cnpj,
+  url: SITE.url,
+  logo: `${SITE.url}/img/logo-pronex.webp`,
+  foundingDate: String(EMPRESA.fundacao),
+  email: CONTATO.email,
+  telephone: "+55-11-4114-9633",
+  sameAs: [EMPRESA.siteInstitucional],
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: EMPRESA.endereco,
+    addressLocality: EMPRESA.cidade,
+    addressRegion: EMPRESA.uf,
+    postalCode: EMPRESA.cep,
+    addressCountry: "BR",
+  },
+};
+const migalhasLd = migalhas && {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [{ label: "Início", href: "/" }, ...migalhas].map((m, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: m.label,
+    item: new URL(m.href ?? path, SITE.url).href,
+  })),
+};
+const ld = [organizacao, ...(migalhasLd ? [migalhasLd] : []), ...jsonld];
+---
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="theme-color" content="#0b2f5b" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content={SITE.nome} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(ogImage, SITE.url).href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <Medicao />
+    {ld.map((o) => <script type="application/ld+json" set:html={JSON.stringify(o)} />)}
+  </head>
+  <body>
+    <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+    <Cabecalho />
+    <main id="conteudo">
+      <slot />
+    </main>
+    <Rodape />
+    <BarraMovel />
+    <WhatsAppFlutuante />
+    <BannerCookies />
+    <script>
+      // Eventos de contato e download (plano de medição da etapa 2)
+      document.addEventListener("click", (e) => {
+        const el = (e.target as HTMLElement).closest<HTMLElement>("[data-evento]");
+        if (!el) return;
+        const w = window as unknown as { dataLayer?: unknown[] };
+        (w.dataLayer = w.dataLayer || []).push({
+          event: el.dataset.evento,
+          canal: el.dataset.canal,
+          origem: el.dataset.origem,
+          arquivo: el.dataset.arquivo,
+          linha: el.dataset.linha,
+          pagina: location.pathname,
+        });
+      });
+    </script>
+  </body>
+</html>

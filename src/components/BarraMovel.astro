@@ -1,0 +1,19 @@
+---
+import { CONTATO, whatsappUrl, WHATSAPP_SAUDACAO } from "../data/site";
+import Icone from "./Icone.astro";
+---
+<nav class="barra" aria-label="Contato rápido">
+  <a href={CONTATO.telefoneHref} data-evento="contact_click" data-canal="telefone" data-origem="barra_movel"><Icone nome="tel" /><span>Ligar</span></a>
+  <a href={whatsappUrl(WHATSAPP_SAUDACAO)} target="_blank" rel="noopener" data-evento="contact_click" data-canal="whatsapp" data-origem="barra_movel"><Icone nome="wa" /><span>WhatsApp</span></a>
+  <a href="/orcamento" class="barra-pri"><Icone nome="doc" /><span>Orçamento</span></a>
+</nav>
+<style>
+  .barra { display: none; }
+  @media (max-width: 920px) {
+    .barra { display: grid; grid-template-columns: 1fr 1fr 1.2fr; position: fixed; left: 0; right: 0; bottom: 0; z-index: 45; background: #fff; border-top: 1px solid var(--linha); padding: 8px 8px calc(8px + env(safe-area-inset-bottom)); gap: 8px; }
+    .barra a { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; border-radius: 8px; text-decoration: none; color: var(--tinta); font-weight: 600; font-size: 15px; border: 1px solid var(--linha); }
+    .barra :global(svg) { width: 20px; height: 20px; }
+    .barra a:nth-child(2) :global(svg) { color: var(--wa); }
+    .barra .barra-pri { background: var(--azul); color: #fff; border-color: var(--azul); }
+  }
+</style>
